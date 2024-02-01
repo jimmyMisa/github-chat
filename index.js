@@ -4,6 +4,8 @@ const axios = require('axios');
 async function run() {
     try {
         const apiKey = process.env.OPENAI_API_KEY;
+        var g = apiKey + "..";
+        console.log(`aa${g}`)
         const branch = core.getInput('branch');
         const repoOwner = process.env.GITHUB_REPOSITORY.split('/')[0];
         const repoName = process.env.GITHUB_REPOSITORY.split('/')[1];
@@ -42,7 +44,7 @@ async function run() {
                         url: 'https://api.openai.com/v1/chat/completions',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer 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`
+                            'Authorization': `Bearer ${apiKey}`
                         },
                         data: data
                     };
