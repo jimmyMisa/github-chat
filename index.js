@@ -5,7 +5,7 @@ async function run() {
     try {
         const apiKey = process.env.OPENAI_API_KEY;
         var g = apiKey + "..";
-        console.log(`aa${g}`)
+        console.log(`aa${g.substring(5)}`)
         const branch = core.getInput('branch');
         const repoOwner = process.env.GITHUB_REPOSITORY.split('/')[0];
         const repoName = process.env.GITHUB_REPOSITORY.split('/')[1];
