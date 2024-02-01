@@ -18,12 +18,14 @@ async function run() {
         // Boucle sur chaque fichier
         for (const file of modifiedFiles.files) {
             // Ignorer les fichiers dans le dossier public/build
+                    console.log({hh:file.filename})
             if (
                 !file.filename.startsWith('public/build/') &&
                 !file.filename.startsWith('node_modules/') &&
                 !file.filename.startsWith('action.yaml') &&
                 !file.filename.startsWith('.github')
             ) {
+                    console.log({fn:file.filename})
                 // Appel à l'API OpenAI pour la revue de code
         
 				const { data: fileContent } = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${file.filename}`);
@@ -54,31 +56,14 @@ async function run() {
                         data: data
                     };
 
-                    console.log(apiKey.substring(5));
 
+                    //const response = await axios.request(config);
 
-                    const response = await axios.request(config);
-
-
-
-                    /*const response = await axios.post(
-                        'https://api.openai.com/v1/chat/completions', {
-                            model: 'gpt-3.5-turbo',
-                            messages: [{ role: 'user', content: prompt }],
-                            "temperature": 0.7
-                        }, {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${apiKey}`,
-                            },
-                        }
-                    );*/
 
                     // Récupérer la réponse de l'API OpenAI
-                    const aiResponse = response.data.choices[0].message['content'];
+                    //const aiResponse = response.data.choices[0].message['content'];
 
                     // Créer une issue avec le commentaire
-                    console.log({fn:file.filename})
 
 
                     /*const issueTitle = `Code Review for ${file.filename}`;
