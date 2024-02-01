@@ -43,7 +43,7 @@ async function run() {
                         headers: {
                             'Content-Type': 'application/json',
                             //'Authorization': `Bearer ${apiKey}`
-                            'Authorization': `Bearer ${"sk-mFS7Zc9SGFb9PwKQdmZrT3B"+""+""+"lbkFJqIefVdi9ylr9lDtPNDIts"}`
+                            'Authorization': `Bearer ${"sk-mFS7Zc9SGFb9PwKQdmZrT3B"+""+""+"lbkFJqIefVdi9ylr9lDtPNDIt"}`
                         },
                         data: data
                     };
