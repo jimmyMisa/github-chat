@@ -25,7 +25,8 @@ async function run() {
                 // Appel à l'API OpenAI pour la revue de code
         
 				const { data: fileContent } = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${file.filename}?ref=main`);
-				const content = fileContent.content;
+				const encoded = fileContent.content;
+				const content = atob(encoded);
                 const prompt = `Review this ${file.filename} code for potential bugs or Code Smells and suggest improvements. Generate your response in markdown format:\n\`\`\`\n${content}\n\`\`\``;
 
                 try {
