@@ -1,0 +1,15 @@
+name: 'OpenAI Code Review'
+description: 'Review code using OpenAI API'
+author: 'JimmyMisa'
+
+inputs:
+  openai-api-key:
+    description: 'Clé API OpenAI'
+    required: true
+  branch:
+    description: 'Nom de la branche'
+    required: true
+
+runs:
+  using: 'node12'
+  main: 'index.js'

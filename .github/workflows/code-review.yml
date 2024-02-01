@@ -1,0 +1,27 @@
+name: OpenAI Code Review
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '12'
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Run OpenAI Code Review
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: node index.js
