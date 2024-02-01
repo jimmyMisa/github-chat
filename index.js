@@ -3,7 +3,7 @@ const axios = require('axios');
 
 async function run() {
   try {
-    const apiKey = core.getInput('openai-api-key');
+  	const apiKey = process.env.OPENAI_API_KEY;
     const branch = core.getInput('branch');
     const repoOwner = process.env.GITHUB_REPOSITORY.split('/')[0];
     const repoName = process.env.GITHUB_REPOSITORY.split('/')[1];
