@@ -14,7 +14,12 @@ async function run() {
     // Boucle sur chaque fichier
     for (const file of modifiedFiles.files) {
       // Ignorer les fichiers dans le dossier public/build
-      if (!file.filename.startsWith('public/build/')) {
+      if (
+      	!file.filename.startsWith('public/build/') &&
+      	!file.filename.startsWith('node_modules/') &&
+      	!file.filename.startsWith('action.yaml') &&
+      	!file.filename.startsWith('.github')
+      	) {
         // Appel à l'API OpenAI pour la revue de code
         const prompt = `Review this ${file.filename} code for potential bugs or Code Smells and suggest improvements. Generate your response in markdown format.`;
 
