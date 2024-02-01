@@ -11,7 +11,7 @@ async function run() {
         const repoName = process.env.GITHUB_REPOSITORY.split('/')[1];
 
         // Récupérer la liste des fichiers modifiés
-        const { data: modifiedFiles } = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/compare/HEAD^...main`);
+        const { data: modifiedFiles } = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/compare/main^...main`);
         console.log(modifiedFiles)
         console.log(JSON.stringify(modifiedFiles))
 
