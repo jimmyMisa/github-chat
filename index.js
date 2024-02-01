@@ -42,7 +42,7 @@ async function run() {
                         url: 'https://api.openai.com/v1/chat/completions',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${apiKey}`
+                            'Authorization': `Bearer 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`
                         },
                         data: data
                     };
