@@ -21,6 +21,7 @@ jobs:
     - name: Install Dependencies
       run: npm install
 
+
     - name: Run OpenAI Code Review
       run: node index.js
       with:
