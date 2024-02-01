@@ -4,8 +4,6 @@ const axios = require('axios');
 async function run() {
     try {
         const apiKey = process.env.OPENAI_API_KEY;
-        var g = apiKey + "..";
-        console.log(`aa${g.substring(5)}`)
         const branch = core.getInput('branch');
         const repoOwner = process.env.GITHUB_REPOSITORY.split('/')[0];
         const repoName = process.env.GITHUB_REPOSITORY.split('/')[1];
@@ -37,8 +35,6 @@ async function run() {
                         }],
                         "temperature": 0.7
                     });
-                    var apc = "mFS7Zc9SGFb9PwKQdmZ"+""+""+""+"rT3BlbkFJqIefVdi9ylr9lDtPNDIt"
-                    console.log(apc)
 
                     let config = {
                         method: 'post',
@@ -46,14 +42,30 @@ async function run() {
                         url: 'https://api.openai.com/v1/chat/completions',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${apc}`
+                            'Authorization': `Bearer ${apiKey}`
                         },
                         data: data
                     };
 
+                    console.log(apiKey.substring(5));
+
 
                     const response = await axios.request(config);
 
+
+
+                    /*const response = await axios.post(
+                        'https://api.openai.com/v1/chat/completions', {
+                            model: 'gpt-3.5-turbo',
+                            messages: [{ role: 'user', content: prompt }],
+                            "temperature": 0.7
+                        }, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${apiKey}`,
+                            },
+                        }
+                    );*/
 
                     // Récupérer la réponse de l'API OpenAI
                     const aiResponse = response.data.choices[0].message['content'];
@@ -76,6 +88,7 @@ async function run() {
 
                     console.log(`Code review for ${file.filename} added as issue: ${createdIssue.html_url}`);
                 } catch (error) {
+                	console.log(error.response.data)
                     core.setFailed(`Error calling OpenAI API: ${error.message}`);
                 }
             }
