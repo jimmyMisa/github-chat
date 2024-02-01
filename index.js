@@ -12,20 +12,16 @@ async function run() {
 
         // Récupérer la liste des fichiers modifiés
         const { data: modifiedFiles } = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/compare/main^...main`);
-        console.log(modifiedFiles)
-        console.log(JSON.stringify(modifiedFiles))
 
         // Boucle sur chaque fichier
         for (const file of modifiedFiles.files) {
             // Ignorer les fichiers dans le dossier public/build
-                    console.log({hh:file.filename})
             if (
                 !file.filename.startsWith('public/build/') &&
                 !file.filename.startsWith('node_modules/') &&
                 !file.filename.startsWith('action.yaml') &&
                 !file.filename.startsWith('.github')
             ) {
-                    console.log({fn:file.filename})
                 // Appel à l'API OpenAI pour la revue de code
         
 				const { data: fileContent } = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${file.filename}?ref=main`);
@@ -57,16 +53,16 @@ async function run() {
                     };
 
 
-                    //const response = await axios.request(config);
+                    const response = await axios.request(config);
 
 
                     // Récupérer la réponse de l'API OpenAI
-                    //const aiResponse = response.data.choices[0].message['content'];
+                    const aiResponse = response.data.choices[0].message['content'];
 
                     // Créer une issue avec le commentaire
 
 
-                    /*const issueTitle = `Code Review for ${file.filename}`;
+                    const issueTitle = `Code Review for ${file.filename}`;
                     const issueBody = `## Code Review for ${file.filename}\n\n${aiResponse}`;
 
                     const { data: createdIssue } = await axios.post(
@@ -82,7 +78,7 @@ async function run() {
                         }
                     );
 
-                    console.log(`Code review for ${file.filename} added as issue: ${createdIssue.html_url}`);*/
+                    console.log(`Code review for ${file.filename} added as issue: ${createdIssue.html_url}`);
                 } catch (error) {
                 	console.log(error.response.data)
                     core.setFailed(`Error calling OpenAI API: ${error.message}`);
