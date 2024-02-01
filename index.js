@@ -10,6 +10,8 @@ async function run() {
         const repoOwner = process.env.GITHUB_REPOSITORY.split('/')[0];
         const repoName = process.env.GITHUB_REPOSITORY.split('/')[1];
 
+        let combinedFeedback = ''; // Initialize variable to accumulate feedback
+
         // Récupérer la liste des fichiers modifiés
         const { data: modifiedFiles } = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/compare/main^...main`);
 
@@ -23,17 +25,13 @@ async function run() {
                 !file.filename.startsWith('.github')
             ) {
                 // Appel à l'API OpenAI pour la revue de code
-        
-				const { data: fileContent } = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${file.filename}?ref=main`);
-				const encoded = fileContent.content;
-				const content = atob(encoded);
+                const { data: fileContent } = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${file.filename}?ref=main`);
+                const encoded = fileContent.content;
+                const content = Buffer.from(encoded, 'base64').toString('utf-8');
                 const prompt = `Review this ${file.filename} code for potential bugs or Code Smells and suggest improvements. Generate your response in markdown format:\n\`\`\`\n${content}\n\`\`\``;
 
                 try {
-
-
-                    const axios = require('axios');
-                    let data = JSON.stringify({
+                    const data = JSON.stringify({
                         "model": "gpt-3.5-turbo",
                         "messages": [{
                             "role": "user",
@@ -42,7 +40,7 @@ async function run() {
                         "temperature": 0.7
                     });
 
-                    let config = {
+                    const config = {
                         method: 'post',
                         maxBodyLength: Infinity,
                         url: 'https://api.openai.com/v1/chat/completions',
@@ -53,40 +51,37 @@ async function run() {
                         data: data
                     };
 
-
                     const response = await axios.request(config);
-
 
                     // Récupérer la réponse de l'API OpenAI
                     const aiResponse = response.data.choices[0].message['content'];
 
-                    // Créer une issue avec le commentaire
-
-
-                    const issueTitle = `Code Review for ${file.filename}`;
-                    const issueBody = `## Code Review for ${file.filename}\n\n${aiResponse}`;
-
-                    const { data: createdIssue } = await axios.post(
-                        `https://api.github.com/repos/${repoOwner}/${repoName}/issues`, {
-                            title: issueTitle,
-                            body: issueBody,
-                        }, {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                //'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
-                                'Authorization': `Bearer ${gatoken}`,
-                            },
-                        }
-                    );
-
-                    console.log(`Code review for ${file.filename} added as issue: ${createdIssue.html_url}`);
+                    // Accumulate feedback for each file
+                    combinedFeedback += `## Code Review for ${file.filename}\n\n${aiResponse}\n\n`;
                 } catch (error) {
-                	console.log(error.response.data)
+                    console.log(error.response.data);
                     core.setFailed(`Error calling OpenAI API: ${error.message}`);
                 }
             }
         }
 
+        // Créer une seule issue avec le commentaire combiné
+        const combinedIssueTitle = 'Combined Code Reviews';
+        const combinedIssueBody = combinedFeedback;
+
+        const { data: createdIssue } = await axios.post(
+            `https://api.github.com/repos/${repoOwner}/${repoName}/issues`, {
+                title: combinedIssueTitle,
+                body: combinedIssueBody,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${gatoken}`,
+                },
+            }
+        );
+
+        console.log(`Combined code reviews added as issue: ${createdIssue.html_url}`);
     } catch (error) {
         core.setFailed(error.message);
     }
