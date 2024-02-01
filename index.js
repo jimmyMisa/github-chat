@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const axios = require('axios');
+const fs = require('fs').promises;
 
 async function run() {
     try {
@@ -22,7 +23,10 @@ async function run() {
                 !file.filename.startsWith('.github')
             ) {
                 // Appel à l'API OpenAI pour la revue de code
-                //const prompt = `Review this ${file.filename} code for potential bugs or Code Smells and suggest improvements. Generate your response in markdown format.`;
+        
+				const { data: fileContent } = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${file.filename}`);
+				const content = fileContent.content;
+                const prompt = `Review this ${file.filename} code for potential bugs or Code Smells and suggest improvements. Generate your response in markdown format:\n\`\`\`\n${content}\n\`\`\``;
 
                 try {
 
@@ -32,7 +36,7 @@ async function run() {
                         "model": "gpt-3.5-turbo",
                         "messages": [{
                             "role": "user",
-                            "content": "Bonjour"
+                            "content": prompt
                         }],
                         "temperature": 0.7
                     });
