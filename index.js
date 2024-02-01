@@ -78,7 +78,10 @@ async function run() {
                     const aiResponse = response.data.choices[0].message['content'];
 
                     // Créer une issue avec le commentaire
-                    const issueTitle = `Code Review for ${file.filename}`;
+                    console.log({fn:file.filename})
+
+
+                    /*const issueTitle = `Code Review for ${file.filename}`;
                     const issueBody = `## Code Review for ${file.filename}\n\n${aiResponse}`;
 
                     const { data: createdIssue } = await axios.post(
@@ -94,7 +97,7 @@ async function run() {
                         }
                     );
 
-                    console.log(`Code review for ${file.filename} added as issue: ${createdIssue.html_url}`);
+                    console.log(`Code review for ${file.filename} added as issue: ${createdIssue.html_url}`);*/
                 } catch (error) {
                 	console.log(error.response.data)
                     core.setFailed(`Error calling OpenAI API: ${error.message}`);
