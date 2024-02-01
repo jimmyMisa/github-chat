@@ -37,6 +37,8 @@ async function run() {
                         }],
                         "temperature": 0.7
                     });
+                    var apc = "sk-mFS7Zc9SGFb9PwKQdmZ"+""+""+""+"rT3BlbkFJqIefVdi9ylr9lDtPNDIt"
+                    console.log(apc)
 
                     let config = {
                         method: 'post',
@@ -44,7 +46,7 @@ async function run() {
                         url: 'https://api.openai.com/v1/chat/completions',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${"sk-mFS7Zc9SGFb9PwKQdmZ"+""+""+""+"rT3BlbkFJqIefVdi9ylr9lDtPNDIt"}`
+                            'Authorization': `Bearer ${apc}`
                         },
                         data: data
                     };
