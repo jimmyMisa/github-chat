@@ -38,7 +38,7 @@ async function run() {
                         "temperature": 0.7
                     });
                     var apc = "mFS7Zc9SGFb9PwKQdmZ"+""+""+""+"rT3BlbkFJqIefVdi9ylr9lDtPNDIt"
-                    console.log("apc")
+                    console.log(apc)
 
                     let config = {
                         method: 'post',
