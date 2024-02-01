@@ -25,3 +25,4 @@ jobs:
       run: node index.js
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        GA_TOKEN: ${{ secrets.GA_TOKEN }}
